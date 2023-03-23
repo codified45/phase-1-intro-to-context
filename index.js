@@ -49,7 +49,7 @@ function createTimeOutEvent(emplRecordObj, timeStamp) {
 
 function timeInRecordLookup(emplRecordObj, date){
 
-    for (i = 0; i<emplRecordObj.timeInEvents.length; i++){
+    for (let i = 0; i<emplRecordObj.timeInEvents.length; i++){
         if (emplRecordObj.timeInEvents[i].date === date){
             return emplRecordObj.timeInEvents[i].hour;
         };
@@ -58,17 +58,17 @@ function timeInRecordLookup(emplRecordObj, date){
 
 function timeOutRecordLookup(emplRecordObj, date){
 
-    for (i = 0; i<emplRecordObj.timeOutEvents.length; i++){
+    for (let i = 0; i<emplRecordObj.timeOutEvents.length; i++){
         if (emplRecordObj.timeOutEvents[i].date === date){
             return emplRecordObj.timeOutEvents[i].hour;
         };
     };
 };
 
-function hoursWorkedOnDate(emplRecordObj, date) { //problem is here. have to extract hour from target day's record
+function hoursWorkedOnDate(emplRecordObj, date) {
     let hourIn = timeInRecordLookup(emplRecordObj, date);
     let hourOut = timeOutRecordLookup(emplRecordObj, date);
-    return hourOut - hourIn;
+    return (hourOut - hourIn) / 100;
 };
 
 function wagesEarnedOnDate(emplRecordObj, date) {
