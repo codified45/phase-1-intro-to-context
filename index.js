@@ -78,7 +78,7 @@ function wagesEarnedOnDate(emplRecordObj, date) {
 };
 
 function allWagesFor(emplRecordObj) {
-    datesWorkedArr = [];
+    let datesWorkedArr = [];
     for (const timeInEvent of emplRecordObj.timeInEvents) {
         datesWorkedArr.push(timeInEvent.date);
     };
