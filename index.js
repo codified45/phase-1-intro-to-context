@@ -22,7 +22,7 @@ function createEmployeeRecords([...records]) {
 };
 
 function createTimeInEvent(emplRecordObj, timeStamp) {
-    const hour = timeStamp[11] + timeStamp[12];
+    const hour = Number.parseInt(timeStamp[11] + timeStamp[12] + "00");
     const date = timeStamp.slice(0,10);
     
     const timeInEvent = {
@@ -35,7 +35,7 @@ function createTimeInEvent(emplRecordObj, timeStamp) {
 };
 
 function createTimeOutEvent(emplRecordObj, timeStamp) {
-    const hour = timeStamp[11] + timeStamp[12];
+    const hour = Number.parseInt(timeStamp[11] + timeStamp[12] + "00");
     const date = timeStamp.slice(0,10);
     
     const timeOutEvent = {
@@ -47,18 +47,52 @@ function createTimeOutEvent(emplRecordObj, timeStamp) {
     return emplRecordObj;
 };
 
-function hoursWorkedOnDate() {
+function timeInRecordLookup(emplRecordObj, date){
 
+    for (i = 0; i<emplRecordObj.timeInEvents.length; i++){
+        if (emplRecordObj.timeInEvents[i].date === date){
+            return emplRecordObj.timeInEvents[i].hour;
+        };
+    };
 };
 
-function wagesEarnedOnDate() {
+function timeOutRecordLookup(emplRecordObj, date){
 
+    for (i = 0; i<emplRecordObj.timeOutEvents.length; i++){
+        if (emplRecordObj.timeOutEvents[i].date === date){
+            return emplRecordObj.timeOutEvents[i].hour;
+        };
+    };
 };
 
-function allWagesfor() {
-
+function hoursWorkedOnDate(emplRecordObj, date) { //problem is here. have to extract hour from target day's record
+    let hourIn = timeInRecordLookup(emplRecordObj, date);
+    let hourOut = timeOutRecordLookup(emplRecordObj, date);
+    return hourOut - hourIn;
 };
 
-function calculatePayroll() {
+function wagesEarnedOnDate(emplRecordObj, date) {
+    let payOwed = hoursWorkedOnDate(emplRecordObj, date) * emplRecordObj.payPerHour;
 
+    return payOwed;
+};
+
+function allWagesFor(emplRecordObj) {
+    datesWorkedArr = [];
+    for (const timeInEvent of emplRecordObj.timeInEvents) {
+        datesWorkedArr.push(timeInEvent.date);
+    };
+    let totalOwedWages = 0;
+    for (const day of datesWorkedArr) {
+        totalOwedWages += wagesEarnedOnDate(emplRecordObj, day);
+    }
+    return totalOwedWages;
+};
+
+function calculatePayroll(arrOfEmplRecordObjects) {
+    let payroll = 0;
+    for (const emplRecordObj of arrOfEmplRecordObjects) {
+        payroll += allWagesFor(emplRecordObj);
+    };
+    return payroll;
 };
