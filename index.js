@@ -14,7 +14,7 @@ function createEmployeeRecord([firstName, familyName, title, payPerHour]) {
 
 function createEmployeeRecords([...records]) {
     const employeesArray = records;
-    let arrOfEmployeeObjects = []
+    let arrOfEmployeeObjects = [];
     for (const employeeArray of employeesArray) {
         arrOfEmployeeObjects.push(createEmployeeRecord(employeeArray));
     };
